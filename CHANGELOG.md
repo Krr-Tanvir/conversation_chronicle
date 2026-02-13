@@ -1,0 +1,34 @@
+# Changelog
+
+All notable changes to the **Chronicle** project will be documented in this file.
+
+## [v20260213.083100] - 2026-02-13
+### Changed
+- **Architecture Consolidation**: Standardized on `activity_log.js` as the Single Source of Truth (SSoT).
+- **Redundancy Cleanup**: Deleted `activity_log.json` to prevent dual-file sync friction.
+- **Bootstrapper Update**: Simplified `chronicle.html` to prioritize the Script-Bridge protocol.
+
+### Reason
+- User requested a more efficient workflow by avoiding redundant edits across two data files.
+- `activity_log.js` provides both JSON structural compatibility and local `file://` protocol bypass (CORS solution).
+
+---
+
+## [v20260213.082200]
+### Added
+- **Dynamic Data Hydration**: Implemented `activity_log.json` fetch for real-time updates.
+- **Script Bridge**: Added `activity_log.js` to bypass local browser security (CORS) when opening the dashboard from the filesystem.
+- **Mutable State**: Changed `CHRONICLE_DATA` to `let` to allow runtime hydration.
+
+### Fixed
+- **TypeError**: Resolved dashboard crash caused by assigning data to a constant variable.
+- **CORS Block**: Fixed the issue where local files couldn't fetch data, preventing updates from showing.
+
+---
+
+## [v20260213.075300]
+### Changed
+- **Minimalist Shift**: Purged legacy React/Vite/TypeScript codebase.
+- **Standalone UI**: Refactored dashboard into single `chronicle.html` with CDN assets.
+- **IDE Visual Parity**: Added Thinking Process blocks and Tool Activity cards (Analyzed, Edited, Synced).
+- **Literal Logging**: Switched to a transparent, tool-based reflection protocol in `activity_log.json`.

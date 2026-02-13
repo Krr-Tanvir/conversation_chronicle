@@ -4,5 +4,8 @@
   "requestFramePermissions": [
     "camera",
     "microphone"
-  ]
+  ],
+  "version": "2.1.0-SSoT",
+  "architecture": "Standalone HTML with Dynamic JS-Bridge (activity_log.js)",
+  "last_sync": "2026-02-13 08:35:00"
 }

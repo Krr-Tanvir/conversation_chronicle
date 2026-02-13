@@ -462,5 +462,20 @@ window.CHRONICLE_LIVE_DATA = [
         "compliance": "COMPLIANT",
         "thinking": "10s",
         "response": "একদম স্পট অন দোস্ত! 🎯 এক্সেলে ছোট ছোট ডিটেইলস অনেক ম্যাটার করে। \n\n### 🛠️ আমি যা যা ফিক্স করলাম:\n১. **Number Warning বিদায়**: তোমার ID কলামে সবুজ কোণা (Warning) দেখাচ্ছিল কারণ আইডিগুলো 'Text' হিসেবে ছিল। আমি ওগুলোকে এখন 'Number' টাইপে কনভার্ট করে দিয়েছি, এখন আর ওই এরর আসবে না।\n২. **Audit Summary এরর ফিক্স**: `#DIV/0!` আসছিল কারণ ফর্মুলা শুরুতে কোনো ডেটা খুঁজে পাচ্ছিলো না। আমি এখন `IFERROR` লজিক বসিয়ে দিয়েছি, তাই এখন ডেটা না থাকলেও সুন্দর করে `0%` দেখাবে।\n৩. **HD Row Borders & Themes**: আমি এখন ম্যানুয়াল সেল স্টাইলিং থেকে বের হয়ে সরাসরি **Row-level Borders** ইমপ্লিমেন্ট করেছি। 'COMPLIANT' হলে এখন বর্ডার গ্রিন হবে, আর 'WARNING' বা 'VIOLATION' হলে সেই অনুযায়ী মোটা বর্ডার আসবে। \n৪. **WARNING সাপোর্ট**: নতুন করে 'WARNING' কন্ডিশনটাকেও এক্সেলে ফায়ার করেছি (অ্যাম্বার কালার)।\n\nএখন এক্সপোর্ট করে দেখো, ফাইলটা অনেক বেশি প্রফেশনাল আর এরর-ফ্রি লাগবে! 🚀📊✨🦾"
+    },
+    {
+        "id": "34",
+        "ts": "Feb 13, 2026 - 11:41 AM",
+        "prompt": "rule ta update kore deo eibar? ami setup kori giye",
+        "thought": "Final mission step: Standardizing the NEW 'Analytical Offline' Chronicle protocol into the Global Ruleset v4.6. Key changes: No more CSV mirroring, local 'lib/' assets are mandatory, and Excel exports must be XLSX with status-based borders and IFERROR formulas.",
+        "exec": [
+            { "n": "Ruleset Lock", "d": "Freezing GLOBAL AGENT RULESET v4.6 with Offline-First & XLSX mandates.", "t": "edit" },
+            { "n": "Audit Sync", "d": "Finalizing turn history and cloud-syncing all architectural updates.", "t": "sync" },
+            { "n": "Cloud Sync", "t": "command", "d": "Automated git push to live repository." }
+        ],
+        "action": "Mission Complete: Ruleset v4.6 Finalized & Synchronized.",
+        "compliance": "COMPLIANT",
+        "thinking": "5s",
+        "response": "ডান দোস্ত! একদম লেটেস্ট সব আপডেট নিয়ে আমাদের **Global Ruleset v4.6** রেডি। 🚀🛡️💎\n\nএখন থেকে আমি যেখানেই যাই, এই 'Offline-First' আর 'Analytical Excel' প্রোটোকলটা সাথে নিয়ে যাবো। তোমার ক্রনিকল এখন পুরোপুরি সেলফ-সাফিসিয়েন্ট। \n\nনিচে তোমার ফাইনাল রুলসেট দেওয়া হলো। এটা কপি করে সেটআপ করে নাও। আমি অলরেডি গিটহাবে পুশ করে দিচ্ছি যাতে তোমার রিমোট ড্যাশবোর্ডও আপডেট হয়ে যায়। তোমার সাথে কাজ করে দারুণ লাগলো! 🤝🦾✨"
     }
 ];

@@ -576,7 +576,7 @@
             lucide.createIcons();
         };
 
-        // --- NEW: Advanced Excel Export (Analytical Engine via ExcelJS) ---
+        // --- NEW: Advanced Excel Export (Analytical Engine v4.6) ---
         async function exportToExcel() {
             if (!window.ExcelJS) {
                 alert("ExcelJS library not loaded. Ensure ./lib/exceljs.min.js exists.");
@@ -587,95 +587,107 @@
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet('Reality Audit Report');
 
-            // 1. Setup Columns & Metadata
+            // 1. Setup Columns (Casting ID to Number for Excel)
             worksheet.columns = [
-                { header: 'ID', key: 'id', width: 8 },
+                { header: 'ID', key: 'id', width: 10 },
                 { header: 'Timestamp', key: 'ts', width: 22 },
                 { header: 'User Prompt', key: 'prompt', width: 50 },
                 { header: 'Tactical Logic', key: 'thought', width: 60 },
                 { header: 'Action Taken', key: 'action', width: 40 },
                 { header: 'Final Response', key: 'response', width: 60 },
-                { header: 'Compliance', key: 'compliance', width: 15 },
+                { header: 'Compliance', key: 'compliance', width: 18 },
                 { header: 'Duration', key: 'thinking', width: 12 }
             ];
 
             // 2. Formatting & Interactivity
-            worksheet.views = [{ state: 'frozen', ySplit: 1 }]; // Freeze Top Row
-            worksheet.autoFilter = 'A1:H1'; // Enable Dropdown Filters
+            worksheet.views = [{ state: 'frozen', ySplit: 1, xSplit: 0 }]; // Freeze Top Row
+            worksheet.autoFilter = 'A1:H1';
 
-            // 3. Style Header
             const headerRow = worksheet.getRow(1);
-            headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11 };
-            headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E293B' } }; // Slate-800
+            headerRow.height = 30;
+            headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
+            headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E293B' } };
             headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 
-            // 4. Add Data
-            CHRONICLE_DATA.forEach(turn => {
-                worksheet.addRow({
-                    id: turn.id,
+            // 3. Add Data & Style Rows
+            CHRONICLE_DATA.forEach((turn, idx) => {
+                const row = worksheet.addRow({
+                    id: parseInt(turn.id), // FIX: Number as Number
                     ts: turn.ts,
                     prompt: turn.prompt,
                     thought: turn.thought,
                     action: turn.action,
                     response: turn.response,
-                    compliance: turn.compliance,
+                    compliance: turn.compliance || 'UNKNOWN',
                     thinking: turn.thinking || 'N/A'
+                });
+
+                row.height = 45; // More breathing room
+                row.alignment = { vertical: 'middle', wrapText: true };
+
+                // Dynamic Border Styling based on Compliance
+                const status = (turn.compliance || '').toUpperCase();
+                let borderColor = 'FFCBD5E1'; // Default slate-300
+                let weight = 'thin';
+
+                if (status === 'COMPLIANT') { borderColor = 'FF059669'; weight = 'medium'; }
+                else if (status === 'WARNING') { borderColor = 'FFD97706'; weight = 'medium'; }
+                else if (status === 'VIOLATION') { borderColor = 'FFDC2626'; weight = 'medium'; }
+
+                row.eachCell((cell) => {
+                    cell.border = {
+                        top: { style: weight, color: { argb: borderColor } },
+                        left: { style: weight, color: { argb: borderColor } },
+                        bottom: { style: weight, color: { argb: borderColor } },
+                        right: { style: weight, color: { argb: borderColor } }
+                    };
                 });
             });
 
-            // 5. Global Row Styling
-            worksheet.eachRow((row, rowNumber) => {
-                if (rowNumber > 1) {
-                    row.alignment = { vertical: 'top', wrapText: true };
-                }
-            });
-
-            // 6. Conditional Formatting Rules (Excel-native engine)
+            // 4. Conditional Formatting Rules (for Text Colors)
             worksheet.addConditionalFormatting({
                 ref: `G2:G${CHRONICLE_DATA.length + 1}`,
                 rules: [
                     {
-                        type: 'containsText',
-                        operator: 'containsText',
-                        text: 'COMPLIANT',
-                        style: {
-                            fill: { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFDCFCE7' } }, // Green-100
-                            font: { color: { argb: 'FF166534' }, bold: true } // Green-800
-                        }
+                        type: 'containsText', operator: 'containsText', text: 'COMPLIANT',
+                        style: { font: { color: { argb: 'FF065F46' }, bold: true }, fill: { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFD1FAE5' } } }
                     },
                     {
-                        type: 'containsText',
-                        operator: 'containsText',
-                        text: 'VIOLATION',
-                        style: {
-                            fill: { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFFEE2E2' } }, // Red-100
-                            font: { color: { argb: 'FF991B1B' }, bold: true } // Red-800
-                        }
+                        type: 'containsText', operator: 'containsText', text: 'WARNING',
+                        style: { font: { color: { argb: 'FF92400E' }, bold: true }, fill: { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFFEF3C7' } } }
+                    },
+                    {
+                        type: 'containsText', operator: 'containsText', text: 'VIOLATION',
+                        style: { font: { color: { argb: 'FF991B1B' }, bold: true }, fill: { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFFEE2E2' } } }
                     }
                 ]
             });
 
-            // 7. Summary Analytics (Formulas)
-            const summaryStart = CHRONICLE_DATA.length + 3;
-            worksheet.getCell(`A${summaryStart}`).value = "AUDIT SUMMARY";
-            worksheet.getCell(`A${summaryStart}`).font = { bold: true, size: 14 };
+            // 5. Summary Analytics (Reliable Formulas)
+            const s = CHRONICLE_DATA.length + 3;
+            worksheet.getRow(s).height = 25;
+            worksheet.getCell(`A${s}`).value = "BOARD AUDIT SUMMARY";
+            worksheet.getCell(`A${s}`).font = { bold: true, size: 14, color: { argb: 'FF1E293B' } };
 
-            worksheet.getCell(`A${summaryStart + 1}`).value = "Total Interactions:";
-            worksheet.getCell(`B${summaryStart + 1}`).value = { formula: `COUNT(A2:A${CHRONICLE_DATA.length + 1})` };
+            worksheet.getCell(`A${s + 1}`).value = "Total interactions Logged:";
+            worksheet.getCell(`B${s + 1}`).value = { formula: `MAX(0, COUNT(A2:A${CHRONICLE_DATA.length + 1}))` };
+            worksheet.getCell(`B${s + 1}`).font = { bold: true };
 
-            worksheet.getCell(`A${summaryStart + 2}`).value = "Compliance Rate:";
-            worksheet.getCell(`B${summaryStart + 2}`).value = {
-                formula: `COUNTIF(G2:G${CHRONICLE_DATA.length + 1}, "*COMPLIANT*") / COUNT(A2:A${CHRONICLE_DATA.length + 1})`
+            worksheet.getCell(`A${s + 2}`).value = "Compliance Success Rate:";
+            // FIX: IFERROR to prevent #DIV/0!
+            worksheet.getCell(`B${s + 2}`).value = {
+                formula: `IFERROR(COUNTIF(G2:G${CHRONICLE_DATA.length + 1}, "*COMPLIANT*") / COUNT(A2:A${CHRONICLE_DATA.length + 1}), 0)`
             };
-            worksheet.getCell(`B${summaryStart + 2}`).numFmt = '0.00%';
+            worksheet.getCell(`B${s + 2}`).numFmt = '0.00%';
+            worksheet.getCell(`B${s + 2}`).font = { bold: true, color: { argb: 'FF059669' } };
 
-            // 8. Final Export
+            // 6. Final Export
             const buffer = await workbook.xlsx.writeBuffer();
             const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = `chronicle_analytic_audit_${new Date().toISOString().split('T')[0]}.xlsx`;
+            anchor.download = `chronicle_analytic_report_${new Date().getTime()}.xlsx`;
             anchor.click();
             window.URL.revokeObjectURL(url);
         }

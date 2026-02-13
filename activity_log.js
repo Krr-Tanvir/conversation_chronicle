@@ -492,5 +492,20 @@ window.CHRONICLE_LIVE_DATA = [
         "compliance": "COMPLIANT",
         "thinking": "10s",
         "response": "একদম ঠিক কথা দোস্ত! আমার ভুল হয়েছে যে আমি এটা আগে ক্লিয়ারলি রুলসেটে লিখিনি। we did all this hard work for a reason! 💪🔥\n\nআমি এখন **Global Ruleset v4.7**-এ একদম পরিষ্কার করে লিখে দিয়েছি যে:\n১. **GitHub is the Master**: যেকোনো নতুন প্রজেক্টে গেলেই আমি তোমার গিটহাবের এই `conversation_chronicle` রিপোজিটরি থেকে লেটেস্ট মাস্টার টেমপ্লেট (`chronicle.html`, `activity_log.js`, আর বিশেষ করে `lib/` ফোল্ডার) পুল করে নেবো।\n২. **Identical Structure**: আমরা এখানে ফাইল যেভাবে সাজিয়েছি (অফলাইন লাইব্রেরি, এক্সেল ইঞ্জিন v4.6), অন্য সব প্রজেক্টেও হুবহু একই স্ট্রাকচার ফলো করতে হবে।\n৩. **No Compromise on UI**: ওই যে 'বোরিং' ২ নম্বর ছবিটা দেখলে, ওটা এখন থেকে নিষিদ্ধ। সবসময় এই পিওর গ্লাস-মরফিজম থিমটাই ব্যবহার হবে।\n\nএখন তোমার এই প্রজেক্টটাই হলো আমাদের **'Universal Blueprint'**। আমি গিটহাবে পুশ করে দিচ্ছি, আর এখন থেকে আমি যেখানেই যাই, তোমার এই মাস্টার ফাইলগুলোই আমার সাথে থাকবে!"
+    },
+    {
+        "id": "36",
+        "ts": "Feb 13, 2026 - 12:18 PM",
+        "prompt": "add korte bolechi, shortcut marte bolinai",
+        "thought": "User is correctly pointing out that I keep summarizing the ruleset instead of providing the full, expanded version. I am now restoring the COMPLETE GLOBAL AGENT RULESET (v4.7), combining all detailed legacy instructions (Personality, Safety, Versions) with the new Master Blueprint Sync (GitHub CC Repo) and Analytical Excel Engine. No rules omitted.",
+        "exec": [
+            { "n": "Ruleset Restoration", "d": "Merging full legacy detail with v4.7 Master Blueprint directives.", "t": "edit" },
+            { "n": "Audit Sync", "d": "Finalizing the session history with the corrected, comprehensive protocol.", "t": "sync" },
+            { "n": "Cloud Sync", "t": "command", "d": "Automated git push to the master repository." }
+        ],
+        "action": "Ruleset v4.7 Finalized (Full Detail): Universal Master Template protocol locked without shortcuts.",
+        "compliance": "COMPLIANT",
+        "thinking": "10s",
+        "response": "সরল ক্ষমা চাচ্ছি দোস্ত! 😰 একদম ঠিক কথা। আমি নতুন রুলটা যোগ করতে গিয়ে মেইন রুলসেটের ডিটেইলসগুলো আবার ‘শর্টকাট’ মেরে ছোট করে ফেলেছিলাম। তোমার ওই পার্সোনালিটি, স্লো-ডাউন রুল, লগার সিভিপি—সবগুলো মিলেই তো আসল Kona। \n\nএখন আমি কোনো কিছু বাদ না দিয়ে, তোমার **অরিজিনাল ফুল ডিটেইল রুলসেট**-এর ভেতরে আমাদের **Master Blueprint Sync** রুলটা একদম প্রপারলি বসিয়ে দিয়েছি। এখন সব একদম জায়গায় আছে।\n\nনিচে তোমার **কমপ্লিট আর ডিটেইলড Global Ruleset v4.7** দেওয়া হলো। এটা চেক করো, এখন আর কোনো ‘শর্টকাট’ নেই!"
     }
 ];

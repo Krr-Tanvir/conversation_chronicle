@@ -576,7 +576,7 @@
             lucide.createIcons();
         };
 
-        // --- NEW: Advanced Excel Export (Color Coded via ExcelJS) ---
+        // --- NEW: Advanced Excel Export (Analytical Engine via ExcelJS) ---
         async function exportToExcel() {
             if (!window.ExcelJS) {
                 alert("ExcelJS library not loaded. Ensure ./lib/exceljs.min.js exists.");
@@ -585,29 +585,33 @@
             if (!CHRONICLE_DATA || CHRONICLE_DATA.length === 0) return;
 
             const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Reality Audit');
+            const worksheet = workbook.addWorksheet('Reality Audit Report');
 
-            // 1. Setup Columns
+            // 1. Setup Columns & Metadata
             worksheet.columns = [
                 { header: 'ID', key: 'id', width: 8 },
-                { header: 'Timestamp', key: 'ts', width: 25 },
+                { header: 'Timestamp', key: 'ts', width: 22 },
                 { header: 'User Prompt', key: 'prompt', width: 50 },
                 { header: 'Tactical Logic', key: 'thought', width: 60 },
-                { header: 'Final Action', key: 'action', width: 40 },
-                { header: 'AI Response', key: 'response', width: 60 },
+                { header: 'Action Taken', key: 'action', width: 40 },
+                { header: 'Final Response', key: 'response', width: 60 },
                 { header: 'Compliance', key: 'compliance', width: 15 },
-                { header: 'Thinking', key: 'thinking', width: 12 }
+                { header: 'Duration', key: 'thinking', width: 12 }
             ];
 
-            // 2. Style Header
+            // 2. Formatting & Interactivity
+            worksheet.views = [{ state: 'frozen', ySplit: 1 }]; // Freeze Top Row
+            worksheet.autoFilter = 'A1:H1'; // Enable Dropdown Filters
+
+            // 3. Style Header
             const headerRow = worksheet.getRow(1);
-            headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
+            headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11 };
             headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E293B' } }; // Slate-800
             headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 
-            // 3. Add Data & Apply Styling
+            // 4. Add Data
             CHRONICLE_DATA.forEach(turn => {
-                const row = worksheet.addRow({
+                worksheet.addRow({
                     id: turn.id,
                     ts: turn.ts,
                     prompt: turn.prompt,
@@ -617,28 +621,61 @@
                     compliance: turn.compliance,
                     thinking: turn.thinking || 'N/A'
                 });
-
-                // Conditional Formatting for Compliance
-                const complianceCell = row.getCell('compliance');
-                if (turn.compliance === 'COMPLIANT') {
-                    complianceCell.font = { color: { argb: 'FF059669' }, bold: true }; // Emerald-600
-                    complianceCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFECFDF5' } }; // Emerald-50
-                } else if (turn.compliance === 'VIOLATION') {
-                    complianceCell.font = { color: { argb: 'FFDC2626' }, bold: true }; // Red-600
-                    complianceCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFEF2F2' } }; // Red-50
-                }
-
-                // General Alignment
-                row.alignment = { vertical: 'top', wrapText: true };
             });
 
-            // 4. Final Polish & Save
+            // 5. Global Row Styling
+            worksheet.eachRow((row, rowNumber) => {
+                if (rowNumber > 1) {
+                    row.alignment = { vertical: 'top', wrapText: true };
+                }
+            });
+
+            // 6. Conditional Formatting Rules (Excel-native engine)
+            worksheet.addConditionalFormatting({
+                ref: `G2:G${CHRONICLE_DATA.length + 1}`,
+                rules: [
+                    {
+                        type: 'containsText',
+                        operator: 'containsText',
+                        text: 'COMPLIANT',
+                        style: {
+                            fill: { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFDCFCE7' } }, // Green-100
+                            font: { color: { argb: 'FF166534' }, bold: true } // Green-800
+                        }
+                    },
+                    {
+                        type: 'containsText',
+                        operator: 'containsText',
+                        text: 'VIOLATION',
+                        style: {
+                            fill: { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFFEE2E2' } }, // Red-100
+                            font: { color: { argb: 'FF991B1B' }, bold: true } // Red-800
+                        }
+                    }
+                ]
+            });
+
+            // 7. Summary Analytics (Formulas)
+            const summaryStart = CHRONICLE_DATA.length + 3;
+            worksheet.getCell(`A${summaryStart}`).value = "AUDIT SUMMARY";
+            worksheet.getCell(`A${summaryStart}`).font = { bold: true, size: 14 };
+
+            worksheet.getCell(`A${summaryStart + 1}`).value = "Total Interactions:";
+            worksheet.getCell(`B${summaryStart + 1}`).value = { formula: `COUNT(A2:A${CHRONICLE_DATA.length + 1})` };
+
+            worksheet.getCell(`A${summaryStart + 2}`).value = "Compliance Rate:";
+            worksheet.getCell(`B${summaryStart + 2}`).value = {
+                formula: `COUNTIF(G2:G${CHRONICLE_DATA.length + 1}, "*COMPLIANT*") / COUNT(A2:A${CHRONICLE_DATA.length + 1})`
+            };
+            worksheet.getCell(`B${summaryStart + 2}`).numFmt = '0.00%';
+
+            // 8. Final Export
             const buffer = await workbook.xlsx.writeBuffer();
             const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = `chronicle_audit_${new Date().toISOString().split('T')[0]}.xlsx`;
+            anchor.download = `chronicle_analytic_audit_${new Date().toISOString().split('T')[0]}.xlsx`;
             anchor.click();
             window.URL.revokeObjectURL(url);
         }

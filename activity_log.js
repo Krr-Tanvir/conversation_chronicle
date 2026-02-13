@@ -432,5 +432,20 @@ window.CHRONICLE_LIVE_DATA = [
         "compliance": "COMPLIANT",
         "thinking": "15s",
         "response": "মিশন সাকসেসফুল দোস্ত! 🚀🛡️💎\n\nআমরা এখন **'Total Independence Protocol'**-এ চলে গেছি। তোমার ক্রনিকল এখন ইন্টারটনেট ছাড়াই একদম মাখনের মতো চলবে এবং তুমি কালার-কোডেড এক্সেল ফাইল নামাতে পারবে।\n\n### ✅ যা যা আপডেট করলাম:\n১. **lib/ ফোল্ডার**: আমি তোমার সব প্রয়োজনীয় লাইব্রেরি (Tailwind, Lucide, ExcelJS) ডাউনলোড করে এই ফোল্ডারে রেখে দিয়েছি। এখন আর কোনো CDN-এর দরকার নেই।\n২. **Color-Coded XLSx**: তোমার ড্যাশবোর্ডের সেই 'Download CSV' বাটনটা এখন **'Export to Excel'** হয়ে গেছে। এটা দিয়ে ডাউনলোড করলে তুমি এক্সেলে সুন্দর কালার কোডিং (যেমন: Compliance-এর জন্য সবুজ/লাল) দেখতে পাবে।\n৩. **Fully Offline**: এখন chronicle.html ওপেন করলে ও তোমার কম্পিউটার থেকেই সব ফাইল লোড করবে। \n\n**এখন একবার রিফ্রেশ দাও!** তোমার ড্যাশবোর্ড এখন ১০০% অফলাইন রেডি আর এক্সেল এক্সপোর্ট এখন আরও প্রিমিয়াম!"
+    },
+    {
+        "id": "32",
+        "ts": "Feb 13, 2026 - 11:15 AM",
+        "prompt": "sobkichu ekta chek deo, oproyojonio sob remove kore deo... xlsx jehetu, can we work with formulas, rules, pivot table...",
+        "thought": "User wants a cleaner project and more power in the Excel export. Action: Removed redundant lucide.min.js in root. Upgrading chronicle.html's exportToExcel to include Freeze Panes (Header), Auto-Filters, Conditional Formatting Rules, and a Formula-driven Summary footer. This turns the raw export into a ready-to-use Audit Report.",
+        "exec": [
+            { "n": "Cleanup", "d": "Deleted redundant root library files.", "t": "command" },
+            { "n": "Excel Power-Up", "d": "Added AutoFilters, Freeze Panes, and Summary Formulas to exportToExcel.", "t": "edit" },
+            { "n": "Audit Sync", "d": "Logged the transition to Analytical XLSx Engine.", "t": "sync" }
+        ],
+        "action": "Project Refined: Activated Analytical Excel Engine (Formulas + Filters).",
+        "compliance": "COMPLIANT",
+        "thinking": "12s",
+        "response": "একদম ক্লিন করে দিলাম দোস্ত! 🧹✨\n\nপ্রজেক্ট রুট থেকে আমি সব ফালতু ফাইল (যেমন ডুপ্লিকেট `lucide.min.js`) রিমুভ করে দিয়েছি। এখন তোমার প্রজেক্ট একদম ফ্রেশ।\n\nআর তোমার এক্সেল এক্সপোর্টকে আমি এখন **'Dynamic Audit Report'** লেভেলে নিয়ে গেছি। \n\n### 📊 নতুন এক্সেল ফিচারে যা যা থাকছে:\n১. **Freeze Panes**: তুমি নিচে স্ক্রল করলেও ওপরের হেডার রো-টা সবসময় আটকে থাকবে (যাতে কলাম চিনতে ভুল না হয়)।\n২. **Auto-Filters**: হেডারের প্রতিটা কলামে এখন ড্রপডাউন ফিল্টার থাকবে। তুমি চাইলে শুধু 'VIOLATION' গুলো এক ক্লিকে আলাদা করতে পারবে।\n৩. **Summary Formulas**: ফাইলের নিচে আমি একটা অটোমেটিক 'Stats Summary' যোগ করে দিয়েছি। সেখানে **COUNT** আর **COMPLIANCE RATE**-এর জন্য এক্সেল ফর্মুলা থাকবে।\n৪. **Conditional Rules**: এখন আর শুধু টেক্সট না, পুরো সেলের ওপর আমি রুলস বসিয়ে দিয়েছি (গ্রিন/রেড হাইলাইট)।\n\n**Pivot Table** সরাসরি ব্রাউজার থেকে জেনারেট করা বেশ কঠিন, কিন্তু আমি ফিল্টার আর ফর্মুলা দিয়ে দিয়েছি যাতে তুমি এক ক্লিকেই পিভট বানিয়ে নিতে পারো। \n\nএখন সেভ করে একবার ট্রাই করো, এক্সেলে ওপেন করলে অবাক হয়ে যাবে! 🚀📈🦾"
     }
 ];

@@ -1,11 +1,7 @@
 {
-  "name": "MediaFlow Master Chronicle v2.1",
-  "description": "A high-fidelity audit transparency dashboard for tracking AI-user interactions, tactical logic, and technical execution steps with Gemini-powered insights.",
-  "requestFramePermissions": [
-    "camera",
-    "microphone"
-  ],
-  "version": "2.1.0-SSoT",
-  "architecture": "Standalone HTML with Dynamic JS-Bridge (activity_log.js)",
-  "last_sync": "2026-02-13 08:35:00"
+  "name": "Universal Master Chronicle v2.1",
+  "description": "The Master Blueprint for high-fidelity audit transparency across all AI-agent workspaces. Featuring Offline-First architecture and Analytical Excel Engine.",
+  "version": "2.1.0-Master",
+  "architecture": "Universal Standalone (activity_log.js + Local Libs)",
+  "last_sync": "2026-02-13 12:25:00"
 }

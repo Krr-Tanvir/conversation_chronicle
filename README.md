@@ -8,12 +8,13 @@ No `npm install` or complex build tools required.
 1.  Open **`chronicle.html`** in any modern web browser.
 2.  Refresh the page to see live updates from the AI session.
 
-## 🏗️ Architecture: Lite & Standalone
-This project has been optimized for **Zero-Dependency Transparency**.
+## 🏗️ Architecture: Universal & Standalone
+This project is the **Global Master Blueprint** for AI session auditing.
 
-- **Dashboard (`chronicle.html`)**: A standalone HTML5/Vanilla JS app. It uses Tailwind CSS and Lucide Icons via CDN for a premium, IDE-like interface.
-- **Single Source of Truth (`activity_log.js`)**: A script-based data bridge that stores the entire session history. This architecture bypasses local browser CORS restrictions (via `file://` protocol), enabling "Live Hydration" without a local server.
-- **Safety Protocol**: Every significant change is backed up in the `versions/` directory (ignored by Git) to ensure rollback protection.
+- **Dashboard (`chronicle.html`)**: A standalone HTML5 dashboard. It uses local assets (Tailwind, Lucide, ExcelJS) for a premium, IDE-like interface.
+- **Single Source of Truth (`activity_log.js`)**: A script-based data bridge that stores the entire session history. 
+- **Offline Independence (`lib/`)**: A local repository for core styling and export libraries, ensuring 100% functionality without internet.
+- **Analytical Export**: Features a built-in Excel engine (XLSX) with freeze-panes, filters, and automated audit summaries.
 
 ## 🧪 Literacy Protocol
 This Chronicle follows a **Literal Reflection Protocol**:
@@ -22,4 +23,4 @@ This Chronicle follows a **Literal Reflection Protocol**:
 - **Full Capture**: Includes the literal user prompt and the AI's final response for total session auditability.
 
 ---
-*Maintained by Kona • (c) 2026 MediaFlow Enhancements*
+*Maintained by Kona • Global Master Blueprint v4.7*

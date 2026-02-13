@@ -2,6 +2,12 @@
 
 All notable changes to the **Chronicle** project will be documented in this file.
 
+## [v20260213.102500] - 2026-02-13
+### Added
+- **CSV Mirroring**: Launched `activity_log.csv` for Excel-native audit accessibility.
+- **Ruleset v4 Integration**: Formalized Universal Chronicle Auto-Setup and SSoT Standard in global rules.
+- **Consultation First Protocol**: Mandated architectural discussion before code generation.
+
 ## [v20260213.083100] - 2026-02-13
 ### Changed
 - **Architecture Consolidation**: Standardized on `activity_log.js` as the Single Source of Truth (SSoT).

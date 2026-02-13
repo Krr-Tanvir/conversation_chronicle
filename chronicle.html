@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chronicle v2.1 | Reality Audit</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
+    <!-- Offline Assets: Standardized via /lib directory -->
+    <script src="./lib/tailwind.min.js"></script>
+    <script src="./lib/lucide.min.js"></script>
+    <script src="./lib/exceljs.min.js"></script>
+    <!-- Google Fonts (Requires Internet to load fonts, but app works without them) -->
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
         tailwind.config = {
@@ -127,11 +127,11 @@
                     <input type="text" id="searchInput" placeholder="Search audit logs..."
                         class="bg-slate-900 border border-slate-800 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500/50 transition-all w-64">
                 </div>
-                <button onclick="downloadCSV()"
+                <button onclick="exportToExcel()"
                     class="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-sm font-bold hover:bg-slate-800 transition-colors group">
-                    <i data-lucide="download"
+                    <i data-lucide="file-spreadsheet"
                         class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform"></i>
-                    <span class="hidden sm:inline">Download CSV</span>
+                    <span class="hidden sm:inline">Export to Excel</span>
                 </button>
             </div>
         </div>
@@ -576,41 +576,71 @@
             lucide.createIcons();
         };
 
-        // --- NEW: Client-Side CSV Generator (Excel Compatible) ---
-        function downloadCSV() {
+        // --- NEW: Advanced Excel Export (Color Coded via ExcelJS) ---
+        async function exportToExcel() {
+            if (!window.ExcelJS) {
+                alert("ExcelJS library not loaded. Ensure ./lib/exceljs.min.js exists.");
+                return;
+            }
             if (!CHRONICLE_DATA || CHRONICLE_DATA.length === 0) return;
 
-            // Headers for Excel
-            const headers = ["ID", "Timestamp", "Prompt", "Tactical Logic", "Action", "Final Response", "Compliance", "Duration"];
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Reality Audit');
 
-            // RFC 4180 Escaping Logic
-            const escape = (text) => {
-                if (text === null || text === undefined) return '""';
-                // Double up internal quotes and wrap in quotes
-                return `"${String(text).replace(/"/g, '""')}"`;
-            };
+            // 1. Setup Columns
+            worksheet.columns = [
+                { header: 'ID', key: 'id', width: 8 },
+                { header: 'Timestamp', key: 'ts', width: 25 },
+                { header: 'User Prompt', key: 'prompt', width: 50 },
+                { header: 'Tactical Logic', key: 'thought', width: 60 },
+                { header: 'Final Action', key: 'action', width: 40 },
+                { header: 'AI Response', key: 'response', width: 60 },
+                { header: 'Compliance', key: 'compliance', width: 15 },
+                { header: 'Thinking', key: 'thinking', width: 12 }
+            ];
 
-            const rows = CHRONICLE_DATA.map(turn => [
-                turn.id,
-                turn.ts,
-                turn.prompt,
-                turn.thought,
-                turn.action,
-                turn.response,
-                turn.compliance,
-                turn.thinking || "N/A"
-            ].map(escape).join(","));
+            // 2. Style Header
+            const headerRow = worksheet.getRow(1);
+            headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
+            headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E293B' } }; // Slate-800
+            headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 
-            const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\n"); // Include BOM for UTF-8 Excel support
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
+            // 3. Add Data & Apply Styling
+            CHRONICLE_DATA.forEach(turn => {
+                const row = worksheet.addRow({
+                    id: turn.id,
+                    ts: turn.ts,
+                    prompt: turn.prompt,
+                    thought: turn.thought,
+                    action: turn.action,
+                    response: turn.response,
+                    compliance: turn.compliance,
+                    thinking: turn.thinking || 'N/A'
+                });
 
-            const link = document.createElement("a");
-            link.href = url;
-            link.setAttribute("download", `chronicle_export_${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+                // Conditional Formatting for Compliance
+                const complianceCell = row.getCell('compliance');
+                if (turn.compliance === 'COMPLIANT') {
+                    complianceCell.font = { color: { argb: 'FF059669' }, bold: true }; // Emerald-600
+                    complianceCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFECFDF5' } }; // Emerald-50
+                } else if (turn.compliance === 'VIOLATION') {
+                    complianceCell.font = { color: { argb: 'FFDC2626' }, bold: true }; // Red-600
+                    complianceCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFEF2F2' } }; // Red-50
+                }
+
+                // General Alignment
+                row.alignment = { vertical: 'top', wrapText: true };
+            });
+
+            // 4. Final Polish & Save
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = `chronicle_audit_${new Date().toISOString().split('T')[0]}.xlsx`;
+            anchor.click();
+            window.URL.revokeObjectURL(url);
         }
 
         // Initial Load

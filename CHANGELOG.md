@@ -2,6 +2,11 @@
 
 All notable changes to the **Chronicle** project will be documented in this file.
 
+## [v20260213.103100] - 2026-02-13
+### Fixed
+- **Ruleset Restoration (v4.2)**: Merged original detailed safety/personality rules with the new Chronicle & Cloud-Sync automation after a condensation error in v4.1.
+- **Protocol Integrity**: Ensured no legacy instructions were removed, only additive enhancements.
+
 ## [v20260213.102800] - 2026-02-13
 ### Added
 - **Cloud-First Automation (v4.1)**: Formalized automated `git push` after every turn into the Global Ruleset.

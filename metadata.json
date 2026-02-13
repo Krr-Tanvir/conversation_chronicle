@@ -1,0 +1,8 @@
+{
+  "name": "MediaFlow Master Chronicle v2.1",
+  "description": "A high-fidelity audit transparency dashboard for tracking AI-user interactions, tactical logic, and technical execution steps with Gemini-powered insights.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

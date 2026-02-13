@@ -127,10 +127,11 @@
                     <input type="text" id="searchInput" placeholder="Search audit logs..."
                         class="bg-slate-900 border border-slate-800 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500/50 transition-all w-64">
                 </div>
-                <button
-                    class="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-sm font-bold hover:bg-slate-800 transition-colors">
-                    <i data-lucide="brain-circuit" class="w-4 h-4 text-purple-400"></i>
-                    <span class="hidden sm:inline">AI Analytics</span>
+                <button onclick="downloadCSV()"
+                    class="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-sm font-bold hover:bg-slate-800 transition-colors group">
+                    <i data-lucide="download"
+                        class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                    <span class="hidden sm:inline">Download CSV</span>
                 </button>
             </div>
         </div>
@@ -574,6 +575,43 @@
             renderTurns();
             lucide.createIcons();
         };
+
+        // --- NEW: Client-Side CSV Generator (Excel Compatible) ---
+        function downloadCSV() {
+            if (!CHRONICLE_DATA || CHRONICLE_DATA.length === 0) return;
+
+            // Headers for Excel
+            const headers = ["ID", "Timestamp", "Prompt", "Tactical Logic", "Action", "Final Response", "Compliance", "Duration"];
+
+            // RFC 4180 Escaping Logic
+            const escape = (text) => {
+                if (text === null || text === undefined) return '""';
+                // Double up internal quotes and wrap in quotes
+                return `"${String(text).replace(/"/g, '""')}"`;
+            };
+
+            const rows = CHRONICLE_DATA.map(turn => [
+                turn.id,
+                turn.ts,
+                turn.prompt,
+                turn.thought,
+                turn.action,
+                turn.response,
+                turn.compliance,
+                turn.thinking || "N/A"
+            ].map(escape).join(","));
+
+            const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\n"); // Include BOM for UTF-8 Excel support
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `chronicle_export_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
 
         // Initial Load
         bootstrap();

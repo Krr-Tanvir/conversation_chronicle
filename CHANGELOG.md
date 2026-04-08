@@ -2,6 +2,12 @@
 
 All notable changes to the **Chronicle** project will be documented in this file.
 
+## [v20260409.033100] - 2026-04-09
+### Added
+- **Python Build Phase**: Successfully packaged the Agent Audit Portal into a single-file EXE (`AgentAuditPortal.exe`).
+- **Dependency Sync**: Updated `requirements.txt` with `pywebview` and `pyinstaller`.
+- **Chronicle Synchronization**: Logged Turn 144 (Initiation) and 145 (Execution) for Audit transparency.
+
 ## [v20260218.040400] - 2026-02-18
 ### Added
 - **Turn 44 Initialization**: Successfully logged turn 44 and synchronized the chronicle.

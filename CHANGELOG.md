@@ -2,10 +2,6 @@
 
 All notable changes to the **Chronicle** project will be documented in this file.
 
-## [v20260408.055300] - 2026-04-08
-### Fixed
-- **Gemini Connectivity Debugging**: Investigating "Could not connect to Gemini" error observed in chat. Proposing structural fix for history state sync.
-
 ## [v20260408.053000] - 2026-04-08
 ### Added
 - **Turn 145 Build Execution**: Successfully snapshot and built the Airtel Portal using portable Node/npm.
